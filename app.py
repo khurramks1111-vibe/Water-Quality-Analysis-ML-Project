@@ -2,15 +2,15 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# 1. Page Configuration (Title aur Layout)
+# 1. Page Configuration (Title and Layout)
 st.set_page_config(
     page_title="Water Quality AI Predictor",
     page_icon="💧",
     layout="centered"
 )
 
-# --- 2. Model aur Scaler Load Karein ---
-@st.cache_resource  # Isse model bar-bar load nahi hoga, app super fast chalegi
+# --- 2. Load Model and Scaler  ---
+@st.cache_resource  # The model won't need to be reloaded repeatedly, and the app will run super fast
 def load_ml_assets():
     try:
         model = joblib.load('water_potability_rf_model.pkl')
@@ -29,10 +29,10 @@ st.caption(status_message)
 st.markdown("---")
 
 # --- 4. Inputs Layout (2 Columns Grid) ---
-# Hum page ko 2 columns mein divide kar rahe hain taaki ui khoobsurat lage
+# Dividing the page into two columns so that it looks attractive.
 col1, col2 = st.columns(2)
 
-# Features list default values ke sath (mg/L)
+# Features list with default values  (mg/L)
 features_info = [
     ("Aluminium", "aluminium", 1.65), ("Ammonia", "ammonia", 9.08),
     ("Arsenic", "arsenic", 0.04), ("Barium", "barium", 2.85),
@@ -48,9 +48,9 @@ features_info = [
 
 input_values = []
 
-# Inputs ko dynamically donon columns mein distribute karna
+# Inputs are dynamically distributed in both columns
 for index, (display_name, key_name, default_val) in enumerate(features_info):
-    # Float step adjustment automatic decimal settings ke liye
+    # Float step adjustment for automatic decimal settings
     step_val = 0.001 if default_val < 0.1 else 0.01
     
     if index % 2 == 0:
